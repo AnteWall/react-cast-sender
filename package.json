@@ -39,10 +39,13 @@
     "@types/react-dom": "16.8.4",
     "@types/styled-components": "4.1.8",
     "lodash": "4.17.11",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
     "rollup": "1.12.3",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-commonjs": "10.0.0",
-    "rollup-plugin-node-resolve": "5.0.0",
+    "rollup-plugin-node-resolve": "^5.0.0",
+    "rollup-plugin-peer-deps-external": "2.2.0",
     "typescript": "3.4.5"
   }
 }

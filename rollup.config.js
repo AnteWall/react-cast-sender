@@ -2,10 +2,16 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 const name = 'ReactCastSender';
+
+const globals = {
+  react: 'react',
+  'react-dom': 'react-dom'
+};
 
 export default {
   input: './src/index.ts',
@@ -26,19 +32,22 @@ export default {
     }),
 
     // Compile TypeScript/JavaScript files
-    babel({ extensions, include: ['src/**/*'] })
+    babel({ extensions, include: ['src/**/*'] }),
+    peerDepsExternal()
   ],
 
   output: [
     {
       file: pkg.main,
-      format: 'cjs'
+      format: 'cjs',
+      globals
     },
     {
       file: pkg.module,
-      format: 'es'
-    },
-    {
+      format: 'es',
+      globals
+    }
+    /*{
       file: pkg.browser,
       format: 'iife',
       name,
@@ -48,6 +57,6 @@ export default {
         react: 'react',
         'react-dom': 'react-dom'
       }
-    }
+    }*/
   ]
 };
