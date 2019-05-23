@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.3d7a58b6.chunk.css",
-    "main.js": "/static/js/main.4965270a.chunk.js",
-    "main.js.map": "/static/js/main.4965270a.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/js/2.2eb0f478.chunk.js": "/static/js/2.2eb0f478.chunk.js",
-    "static/js/2.2eb0f478.chunk.js.map": "/static/js/2.2eb0f478.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.c6cf04dfe04bae0f9c7e1105b6782f6b.js": "/precache-manifest.c6cf04dfe04bae0f9c7e1105b6782f6b.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.3d7a58b6.chunk.css.map": "/static/css/main.3d7a58b6.chunk.css.map"
+    "main.css": "/react-cast-sender/static/css/main.3d7a58b6.chunk.css",
+    "main.js": "/react-cast-sender/static/js/main.06bb14a8.chunk.js",
+    "main.js.map": "/react-cast-sender/static/js/main.06bb14a8.chunk.js.map",
+    "runtime~main.js": "/react-cast-sender/static/js/runtime~main.d869d019.js",
+    "runtime~main.js.map": "/react-cast-sender/static/js/runtime~main.d869d019.js.map",
+    "static/js/2.0240e014.chunk.js": "/react-cast-sender/static/js/2.0240e014.chunk.js",
+    "static/js/2.0240e014.chunk.js.map": "/react-cast-sender/static/js/2.0240e014.chunk.js.map",
+    "index.html": "/react-cast-sender/index.html",
+    "precache-manifest.b6aec65a554fbd6de6209bf673156214.js": "/react-cast-sender/precache-manifest.b6aec65a554fbd6de6209bf673156214.js",
+    "service-worker.js": "/react-cast-sender/service-worker.js",
+    "static/css/main.3d7a58b6.chunk.css.map": "/react-cast-sender/static/css/main.3d7a58b6.chunk.css.map"
   }
 }
