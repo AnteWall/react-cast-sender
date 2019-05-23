@@ -1,0 +1,48 @@
+{
+  "name": "react-cast-sender",
+  "version": "0.1.0",
+  "description": "Cast Sender built for React for Chromecast (CAF)",
+  "main": "dist/react-cast-sender.cjs.js",
+  "module": "dist/react-cast-sender.esm.js",
+  "browser": "dist/react-cast-sender.iife.js",
+  "types": "dist/types/index.d.ts",
+  "author": {
+    "name": "Ante Wall",
+    "email": "antewall@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "rollup -c",
+    "build": "npm run build:types && npm run build:js"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "styled-components": "^4.2.0"
+  },
+  "dependencies": {
+    "@types/chrome": "0.0.86",
+    "@types/chromecast-caf-sender": "1.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.4.5",
+    "@babel/plugin-proposal-class-properties": "7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.4",
+    "@babel/preset-env": "7.4.5",
+    "@babel/preset-react": "7.0.0",
+    "@babel/preset-typescript": "7.3.3",
+    "@types/lodash": "4.14.130",
+    "@types/react": "16.8.18",
+    "@types/react-dom": "16.8.4",
+    "@types/styled-components": "4.1.8",
+    "lodash": "4.17.11",
+    "rollup": "1.12.3",
+    "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-commonjs": "10.0.0",
+    "rollup-plugin-node-resolve": "5.0.0",
+    "typescript": "3.4.5"
+  }
+}
