@@ -11,6 +11,10 @@
     "email": "antewall@gmail.com"
   },
   "license": "MIT",
+  "files": [
+    "lib",
+    "README.md"
+  ],
   "scripts": {
     "start": "rollup -c -w",
     "type-check": "tsc --noEmit",
