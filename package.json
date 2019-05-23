@@ -2,6 +2,19 @@
   "name": "react-cast-sender",
   "version": "0.1.0",
   "description": "Cast Sender built for React for Chromecast (CAF)",
+  "keywords": [
+    "CAF",
+    "Chromecast",
+    "react",
+    "cast",
+    "hooks",
+    "components",
+    "context"
+  ],
+  "homepage": "https://antewall.github.io/react-cast-sender/",
+  "repository": {
+    "url": "https://github.com/antewall/react-cast-sender"
+  },
   "main": "dist/react-cast-sender.cjs.js",
   "module": "dist/react-cast-sender.esm.js",
   "browser": "dist/react-cast-sender.iife.js",
