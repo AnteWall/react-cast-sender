@@ -10,6 +10,7 @@ const useCastPlayer = () => {
   const [duration, setDuration] = useState<number>(0);
   const [isMediaLoaded, setIsMediaLoaded] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(false);
   const [tracks, setTracks] = useState<chrome.cast.media.Track[]>([]);
   const [title, setTitle] = useState<string>('No title');
   const [thumbnail, setThumbnail] = useState<string>(thumbnailImage);
@@ -36,11 +37,13 @@ const useCastPlayer = () => {
     const onMediaInfoChanged = (
       data: cast.framework.RemotePlayerChangedEvent
     ) => {
-      console.log(data);
-
       setTracks(get(data, 'value.tracks', []));
       setThumbnail(get(data, 'value.metadata.images[0].url', thumbnailImage));
       setTitle(get(data, 'value.metadata.title', 'No title'));
+    };
+
+    const onMuteChange = (data: cast.framework.RemotePlayerChangedEvent) => {
+      setIsMuted(data.value);
     };
 
     if (playerController) {
@@ -64,6 +67,10 @@ const useCastPlayer = () => {
         window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         onMediaInfoChanged
       );
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
+        onMuteChange
+      );
     }
     return () => {
       if (playerController) {
@@ -86,6 +93,10 @@ const useCastPlayer = () => {
         playerController.removeEventListener(
           window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
           onMediaInfoChanged
+        );
+        playerController.removeEventListener(
+          window.cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
+          onMuteChange
         );
       }
       setTracks([]);
@@ -153,7 +164,6 @@ const useCastPlayer = () => {
           trackStyle
         );
         const media = castSession.getMediaSession();
-        console.log(castSession, media);
         if (media) {
           return new Promise((resolve, reject) => {
             media.editTracksInfo(tracksInfoRequest, resolve, reject);
@@ -175,6 +185,7 @@ const useCastPlayer = () => {
     isMediaLoaded,
     togglePlay,
     seek,
+    isMuted,
     tracks,
     editTracks,
     thumbnail,

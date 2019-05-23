@@ -54,22 +54,17 @@ const CastProvider = ({
 
   /* onCast Initalized */
   useEffect(() => {
-    console.log('CAST INTITIALIZED', castInitialized);
-
     const onSessionStateChange = (
       data: cast.framework.SessionStateEventData
     ) => {
-      console.log(data);
       if (
         data.sessionState === window.cast.framework.SessionState.SESSION_ENDED
       ) {
-        console.log('RESET CAST');
         resetCast();
       }
     };
 
     if (castInitialized && window.cast) {
-      console.log(receiverApplicationId, castInitialized, window.cast);
       window.cast.framework.CastContext.getInstance().setOptions({
         receiverApplicationId,
         resumeSavedSession,
@@ -102,7 +97,6 @@ const CastProvider = ({
     ) => {
       setConnected(true);
       const session = window.cast.framework.CastContext.getInstance().getCurrentSession();
-      console.log(session);
       if (session) {
         setDeviceName(session.getSessionObj().receiver.friendlyName);
       }

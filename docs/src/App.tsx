@@ -1,190 +1,83 @@
 import React, { useState } from 'react';
 import './App.css';
 // @ts-ignore
-import {CastButton, useCast, useCastPlayer, MiniController, CastProvider} from 'react-cast-sender';
+import { CastButton, CastProvider } from 'react-cast-sender';
+import Code from './components/CodeExample';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
-const UseCastExample = () => {
-  const { initialized, connected, deviceName } = useCast();
+import styled from 'styled-components';
+import UseCastExample from './components/UseCastExample';
+import UseCastPlayerExample from './components/UseCastPlayerExample/UseCastPlayerExample';
 
-  return (
-    <div>
-      <pre>useCast()</pre>
-      <table>
-        <thead>
-          <td>Key</td>
-          <td>Value</td>
-        </thead>
-        <tbody>
-          <tr>
-            <td>DeviceName</td>
-            <td>{String(deviceName)}</td>
-          </tr>
-          <tr>
-            <td>Inititalized</td>
-            <td>{String(initialized)}</td>
-          </tr>
-          <tr>
-            <td>Connected</td>
-            <td>{String(connected)}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
-};
-const UseCastPlayerExample = () => {
-  const { connected } = useCast();
-  const {
-    loadMedia,
-    currentTime,
-    isPaused,
-    duration,
-    isMediaLoaded,
-    togglePlay,
-    seek,
-    tracks,
-    editTracks,
-    title,
-    thumbnail
-  } = useCastPlayer();
-  const [time, setTime] = useState<number>(0);
-  return (
-    <div>
-      <pre>useCastPlayer()</pre>
-      <table>
-        <thead>
-          <td>Key</td>
-          <td>Value</td>
-        </thead>
-
-        <tr>
-          <td>isPaused</td>
-          <td>{String(isPaused)}</td>
-        </tr>
-        <tr>
-          <td>isMediaLoaded</td>
-          <td>{String(isMediaLoaded)}</td>
-        </tr>
-        <tr>
-          <td>Currenttime</td>
-          <td>{String(currentTime)}</td>
-        </tr>
-        <tr>
-          <td>Duration</td>
-          <td>{String(duration)}</td>
-        </tr>
-        <tr>
-          <td>Title</td>
-          <td>{String(title)}</td>
-        </tr>
-        <tr>
-          <td>Thumbnail</td>
-          <td>
-            <img src={thumbnail} style={{ width: '120px' }} />
-          </td>
-        </tr>
-      </table>
-
-      <table>
-        <thead>
-          <td>trackId</td>
-          <td>Name</td>
-          <td>TrackContentId</td>
-          <td>TrackContentType</td>
-          <td>Type</td>
-          <td>Subtype</td>
-          <td>language</td>
-          <td>customData</td>
-        </thead>
-        <tbody>
-          {tracks.map((track: any) => {
-            return (
-              <tr key={track.trackId}>
-                <td>{String(track.trackId)}</td>
-                <td>{String(track.name)}</td>
-                <td>{String(track.trackContentId)}</td>
-                <td>{String(track.trackContentType)}</td>
-                <td>{String(track.type)}</td>
-                <td>{String(track.subtype)}</td>
-                <td>{String(track.language)}</td>
-                <td>{JSON.stringify(track.customData)}</td>
-                <td>
-                  <button
-                    disabled={!isMediaLoaded}
-                    onClick={() => {
-                      editTracks([track.trackId]);
-                    }}
-                  >
-                    Set Active Track
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <button
-        disabled={!connected}
-        onClick={() => {
-          const mediaInfo = new window.chrome.cast.media.MediaInfo(
-            //'https://vod-dash.sfanytime.com/trailers/31500/31980/31980.ism/Manifest.mpd',
-            'https://vod-dash.sfanytime.com/trailers/31500/31554/31554.ism/Manifest.mpd',
-            'application/dash+xml'
-          );
-          const metadata = new window.chrome.cast.media.MovieMediaMetadata();
-          metadata.title = 'Unga agnes';
-          metadata.images = [
-            new window.chrome.cast.Image(
-              'https://sfanytime-images-prod.secure.footprint.net/COVERM/0ba94c2c-bccb-4c0e-9d6c-a98b010cf567_COVERM_SV.jpg?w=375&fm=pjpg&s=28f193cb6db6a2b5d34ba3838672fb85'
-            )
-          ];
-          mediaInfo.metadata = metadata;
-          const request = new window.chrome.cast.media.LoadRequest(mediaInfo);
-          loadMedia(request);
-        }}
-      >
-        Load Media
-      </button>
-      <button
-        disabled={!connected || !isMediaLoaded}
-        onClick={() => {
-          togglePlay();
-        }}
-      >
-        Toggle Play/Pause
-      </button>
-      <input
-        value={time}
-        type="number"
-        onChange={e => setTime(Number(e.target.value))}
-        placeholder="time to seek to"
-      />
-      <button
-        disabled={!connected || !isMediaLoaded}
-        onClick={() => {
-          seek(time);
-        }}
-      >
-        Seek
-      </button>
-    </div>
-  );
-};
+const Title = styled.h1`
+  color: #fff;
+  text-align: center;
+`;
+const Container = styled.div`
+  max-width: 960px;
+  margin: auto;
+`;
 
 const App: React.FC = () => {
+  const [receiverApplicationId, setReceiverApplicationId] = useState(
+    '5D7312A7'
+  );
   return (
     <div className="App">
-      <CastProvider receiverApplicationId="5D7312A7">
-        <header className="App-header">
-          <div style={{ width: '64px' }}>
-            <CastButton />
-          </div>
+      <header className="App-header">
+        <Container>
+          <Title>React Cast Sender</Title>
+          <Code step={1} title="Install">
+            yarn add react-cast-sender
+          </Code>
+          <Code step={2} title="Install peer Dependencies">
+            yarn add react <br />
+            yarn add react-dom <br />
+            yarn add styled-components
+          </Code>
+          <Code step={3} title="Add CastProvider">
+            {`import { CastProvider } from 'react-cast-sender';
+
+const App = ({ children }) => {
+  return <CastProvider receiverApplicationId="my-cast-id">
+    {children}
+  </CastProvider>
+}`}
+          </Code>
+        </Container>
+      </header>
+      <Container>
+        <h2>Documentation</h2>
+        <Grid container>
+          <Grid item xs={6}>
+            <TextField
+              disabled
+              id="receiverApplicationId"
+              label="receiverApplicationId"
+              value={receiverApplicationId}
+              onChange={e => {
+                setReceiverApplicationId(e.target.value);
+              }}
+              margin="normal"
+              helperText="Select reveiver Application Id to use in examples below"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <div style={{ width: '64px' }}>
+              <CastButton />
+            </div>
+          </Grid>
+        </Grid>
+        <CastProvider receiverApplicationId={receiverApplicationId}>
+          <h3>Hooks</h3>
+
           <UseCastExample />
           <UseCastPlayerExample />
-        </header>
-
-        <MiniController />
-      </CastProvider>
+          <h3>Components</h3>
+          {/*<MiniController />*/}
+        </CastProvider>
+      </Container>
     </div>
   );
 };
