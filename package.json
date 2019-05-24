@@ -35,6 +35,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "rollup -c",
     "build": "npm run build:types && npm run build:js",
+    "release": "rm -rf dist && yarn build && yarn release",
     "deploy": "yarn build && cd docs &&  PUBLIC_URL=/react-cast-sender/ yarn build && cd .. && gh-pages -d docs/build"
   },
   "peerDependencies": {
