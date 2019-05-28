@@ -1,6 +1,6 @@
 {
   "name": "react-cast-sender",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Cast Sender built for React for Chromecast (CAF)",
   "keywords": [
     "CAF",
