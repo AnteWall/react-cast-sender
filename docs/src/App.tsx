@@ -23,6 +23,7 @@ const App: React.FC = () => {
   const [receiverApplicationId, setReceiverApplicationId] = useState(
     '5D7312A7'
   );
+
   return (
     <div className="App">
       <header className="App-header">

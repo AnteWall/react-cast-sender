@@ -23,19 +23,19 @@ import Muted from '@material-ui/icons/VolumeMute';
 const UseCastPlayerExample = () => {
   const { connected } = useCast();
   const {
-    loadMedia,
     currentTime,
-    isPaused,
     duration,
+    isPaused,
     isMediaLoaded,
     togglePlay,
     seek,
     isMuted,
-    tracks,
     toggleMute,
-    editTracks,
     title,
-    thumbnail
+    thumbnail,
+    loadMedia,
+    tracks,
+    editTracks
   } = useCastPlayer();
 
   const [seekTime, setSeekTime] = useState(0);
@@ -91,8 +91,9 @@ const UseCastPlayerExample = () => {
                   <TableCell align="right">
                     <pre>number</pre>
                   </TableCell>
-                  <TableCell align="right">{currentTime}</TableCell>
+                  <TableCell align="right">{currentTime.toFixed(2)}</TableCell>
                 </TableRow>
+
                 <TableRow>
                   <TableCell component="th" scope="row">
                     duration
@@ -100,7 +101,7 @@ const UseCastPlayerExample = () => {
                   <TableCell align="right">
                     <pre>number</pre>
                   </TableCell>
-                  <TableCell align="right">{duration}</TableCell>
+                  <TableCell align="right">{duration.toFixed(2)}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -142,7 +143,6 @@ const UseCastPlayerExample = () => {
               title="Live from space album cover"
             />
           </Card>
-
           <Paper>
             <TextField
               id="seekTime"
@@ -218,7 +218,7 @@ const UseCastPlayerExample = () => {
                   helperText="Manifest URL to load to cast"
                 />
               </Grid>
-              <Grid item xs={3} alignContent="center">
+              <Grid item xs={3}>
                 <Button
                   disabled={!connected}
                   variant="contained"

@@ -118,13 +118,14 @@ const CastProvider = ({
   }, [playerController]);
 
   const value = useMemo(() => {
-    return {
+    const value = {
       connected,
       initialized: castInitialized,
       deviceName,
       player,
       playerController
     };
+    return value;
   }, [castInitialized, connected, deviceName, player, playerController]);
 
   return <CastContext.Provider value={value}>{children}</CastContext.Provider>;

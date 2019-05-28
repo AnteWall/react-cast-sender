@@ -6,70 +6,29 @@ import thumbnailImage from '../utils/thumbnailImage';
 
 const useCastPlayer = () => {
   const { player, playerController } = useContext(CastContext);
+  const [tracks, setTracks] = useState<chrome.cast.media.Track[]>([]);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [isMediaLoaded, setIsMediaLoaded] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [tracks, setTracks] = useState<chrome.cast.media.Track[]>([]);
   const [title, setTitle] = useState<string>('No title');
   const [thumbnail, setThumbnail] = useState<string>(thumbnailImage);
 
+  /*
+   * CurrentTime Event Listener
+   */
   useEffect(() => {
-    const onCurrentTimeChange = (
+    function onCurrentTimeChange(
       data: cast.framework.RemotePlayerChangedEvent
-    ) => {
+    ) {
       setCurrentTime(data.value);
-    };
-    const onDurationChange = (
-      data: cast.framework.RemotePlayerChangedEvent
-    ) => {
-      setDuration(data.value);
-    };
-    const onIsMediaLoaded = (data: cast.framework.RemotePlayerChangedEvent) => {
-      setIsMediaLoaded(data.value);
-    };
-    const onIsPausedChanged = (
-      data: cast.framework.RemotePlayerChangedEvent
-    ) => {
-      setIsPaused(data.value);
-    };
-    const onMediaInfoChanged = (
-      data: cast.framework.RemotePlayerChangedEvent
-    ) => {
-      setTracks(get(data, 'value.tracks', []));
-      setThumbnail(get(data, 'value.metadata.images[0].url', thumbnailImage));
-      setTitle(get(data, 'value.metadata.title', 'No title'));
-    };
-
-    const onMuteChange = (data: cast.framework.RemotePlayerChangedEvent) => {
-      setIsMuted(data.value);
-    };
+    }
 
     if (playerController) {
       playerController.addEventListener(
         window.cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED,
         onCurrentTimeChange
-      );
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.DURATION_CHANGED,
-        onDurationChange
-      );
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.IS_MEDIA_LOADED_CHANGED,
-        onIsMediaLoaded
-      );
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
-        onIsPausedChanged
-      );
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-        onMediaInfoChanged
-      );
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
-        onMuteChange
       );
     }
     return () => {
@@ -78,43 +37,184 @@ const useCastPlayer = () => {
           window.cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED,
           onCurrentTimeChange
         );
+      }
+    };
+  }, [playerController, setCurrentTime]);
+
+  /*
+   * Duration Event Listener
+   */
+  useEffect(() => {
+    function onDurationChange(data: cast.framework.RemotePlayerChangedEvent) {
+      setDuration(data.value);
+    }
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.DURATION_CHANGED,
+        onDurationChange
+      );
+    }
+    return () => {
+      if (playerController) {
         playerController.removeEventListener(
           window.cast.framework.RemotePlayerEventType.DURATION_CHANGED,
           onDurationChange
         );
+      }
+    };
+  }, [playerController, setDuration]);
+
+  /*
+   * IsMediaLoaded Event Listener
+   */
+  useEffect(() => {
+    function onMediaLoadedChange(data: cast.framework.RemotePlayerChangedEvent) {
+      setIsMediaLoaded(data.value);
+    }
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.IS_MEDIA_LOADED_CHANGED,
+        onMediaLoadedChange
+      );
+    }
+    return () => {
+      if (playerController) {
         playerController.removeEventListener(
           window.cast.framework.RemotePlayerEventType.IS_MEDIA_LOADED_CHANGED,
-          onIsMediaLoaded
+          onMediaLoadedChange
         );
+      }
+    };
+  }, [playerController, setIsMediaLoaded]);
+
+  /*
+   * isPaused Event Listener
+   */
+  useEffect(() => {
+    function onIsPausedChange(data: cast.framework.RemotePlayerChangedEvent) {
+      setIsPaused(data.value);
+    }
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
+        onIsPausedChange
+      );
+    }
+    return () => {
+      if (playerController) {
         playerController.removeEventListener(
           window.cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
-          onIsPausedChanged
+          onIsPausedChange
         );
+      }
+    };
+  }, [playerController, setIsPaused]);
+  /*
+   * isMuted Event Listener
+   */
+  useEffect(() => {
+    function onIsMutedChange(data: cast.framework.RemotePlayerChangedEvent) {
+      setIsMuted(data.value);
+    }
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
+        onIsMutedChange
+      );
+    }
+    return () => {
+      if (playerController) {
+        playerController.removeEventListener(
+          window.cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
+          onIsMutedChange
+        );
+      }
+    };
+  }, [playerController, setIsMuted]);
+
+  useEffect(() => {
+
+    function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
+      // We make the check what we update so we dont update on every player changed event since it happens often
+      const newTracks = get(data, 'value.tracks', []);
+      if (tracks.length !== newTracks.length) {
+        setTracks(newTracks);
+      }
+    }
+
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
+        onMediaInfoChanged
+      );
+    }
+    return () => {
+      if (playerController) {
         playerController.removeEventListener(
           window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
           onMediaInfoChanged
         );
+      }
+    };
+  }, [playerController, setTracks, tracks]);
+
+  useEffect(() => {
+
+    function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
+      // We make the check what we update so we dont update on every player changed event since it happens often
+      const newTitle = get(data, 'value.metadata.title', 'No title');
+      if (title !== newTitle) {
+        setTitle(newTitle);
+      }
+    }
+
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
+        onMediaInfoChanged
+      );
+    }
+    return () => {
+      if (playerController) {
         playerController.removeEventListener(
-          window.cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
-          onMuteChange
+          window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
+          onMediaInfoChanged
         );
       }
-      setTracks([]);
-      setCurrentTime(0);
-      setIsMediaLoaded(false);
-      setIsPaused(false);
-      setThumbnail(thumbnailImage);
-      setTitle('No title');
-      setDuration(0);
     };
-  }, [playerController]);
+  }, [playerController, setTitle, title]);
+
+  useEffect(() => {
+
+    function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
+      // We make the check what we update so we dont update on every player changed event since it happens often
+      const newThumbnail = get(data, 'value.metadata.images[0].url', thumbnailImage);
+      if (thumbnail !== newThumbnail) {
+        setThumbnail(newThumbnail);
+      }
+    }
+
+    if (playerController) {
+      playerController.addEventListener(
+        window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
+        onMediaInfoChanged
+      );
+    }
+    return () => {
+      if (playerController) {
+        playerController.removeEventListener(
+          window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
+          onMediaInfoChanged
+        );
+      }
+    };
+  }, [playerController, thumbnail, setThumbnail]);
 
   const loadMedia = useCallback((request: chrome.cast.media.LoadRequest) => {
     const castSession = window.cast.framework.CastContext.getInstance().getCurrentSession();
     if (castSession) {
       return castSession.loadMedia(request);
     } else {
-      console.warn('No CastSession has been created');
       return Promise.reject('No CastSession has been created');
     }
   }, []);
@@ -179,19 +279,19 @@ const useCastPlayer = () => {
 
   return {
     loadMedia,
-    currentTime,
-    duration,
-    isPaused,
-    isMediaLoaded,
-    togglePlay,
-    seek,
-    isMuted,
     tracks,
     editTracks,
-    thumbnail,
-    title,
+    currentTime,
+    duration,
+    toggleMute,
     setVolume,
-    toggleMute
+    togglePlay,
+    seek,
+    isMediaLoaded,
+    isPaused,
+    isMuted,
+    title,
+    thumbnail,
   };
 };
 export default useCastPlayer;

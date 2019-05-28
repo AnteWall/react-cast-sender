@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 
 const UseCastExample = () => {
   const { initialized, connected, deviceName } = useCast();
-
   return (
     <>
       <Typography gutterBottom variant="h5">
