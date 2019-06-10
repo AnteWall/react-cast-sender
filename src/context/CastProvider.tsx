@@ -64,7 +64,7 @@ const CastProvider = ({
       }
     };
 
-    if (castInitialized && window.cast) {
+    if (!castInitialized && window.cast) {
       window.cast.framework.CastContext.getInstance().setOptions({
         receiverApplicationId,
         resumeSavedSession,
