@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useContext } from 'react';
+import { useMemo, useCallback, useState, useEffect, useContext } from 'react';
 import get from 'lodash/get';
 import CastContext from '../context/CastContext';
 import { getDefaultTrackStyling } from '../utils/utils';
@@ -68,7 +68,9 @@ const useCastPlayer = () => {
    * IsMediaLoaded Event Listener
    */
   useEffect(() => {
-    function onMediaLoadedChange(data: cast.framework.RemotePlayerChangedEvent) {
+    function onMediaLoadedChange(
+      data: cast.framework.RemotePlayerChangedEvent
+    ) {
       setIsMediaLoaded(data.value);
     }
     if (playerController) {
@@ -133,7 +135,6 @@ const useCastPlayer = () => {
   }, [playerController, setIsMuted]);
 
   useEffect(() => {
-
     function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
       // We make the check what we update so we dont update on every player changed event since it happens often
       const newTracks = get(data, 'value.tracks', []);
@@ -159,7 +160,6 @@ const useCastPlayer = () => {
   }, [playerController, setTracks, tracks]);
 
   useEffect(() => {
-
     function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
       // We make the check what we update so we dont update on every player changed event since it happens often
       const newTitle = get(data, 'value.metadata.title', 'No title');
@@ -185,10 +185,13 @@ const useCastPlayer = () => {
   }, [playerController, setTitle, title]);
 
   useEffect(() => {
-
     function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
       // We make the check what we update so we dont update on every player changed event since it happens often
-      const newThumbnail = get(data, 'value.metadata.images[0].url', thumbnailImage);
+      const newThumbnail = get(
+        data,
+        'value.metadata.images[0].url',
+        thumbnailImage
+      );
       if (thumbnail !== newThumbnail) {
         setThumbnail(newThumbnail);
       }
@@ -277,21 +280,40 @@ const useCastPlayer = () => {
     []
   );
 
-  return {
-    loadMedia,
-    tracks,
-    editTracks,
-    currentTime,
-    duration,
-    toggleMute,
-    setVolume,
-    togglePlay,
-    seek,
-    isMediaLoaded,
-    isPaused,
-    isMuted,
-    title,
-    thumbnail,
-  };
+  const value = useMemo(
+    () => ({
+      loadMedia,
+      tracks,
+      editTracks,
+      currentTime,
+      duration,
+      toggleMute,
+      setVolume,
+      togglePlay,
+      seek,
+      isMediaLoaded,
+      isPaused,
+      isMuted,
+      title,
+      thumbnail
+    }),
+    [
+      loadMedia,
+      tracks,
+      editTracks,
+      currentTime,
+      duration,
+      toggleMute,
+      setVolume,
+      togglePlay,
+      seek,
+      isMediaLoaded,
+      isPaused,
+      isMuted,
+      title,
+      thumbnail
+    ]
+  );
+  return value;
 };
 export default useCastPlayer;
