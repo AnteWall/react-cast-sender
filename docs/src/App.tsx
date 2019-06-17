@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const App: React.FC = () => {
   const [receiverApplicationId, setReceiverApplicationId] = useState(
-    '5D7312A7'
+    'CC1AD845'
   );
 
   return (
