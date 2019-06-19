@@ -1,5 +1,7 @@
 # React Cast Sender
 
+[![Coverage Status](https://coveralls.io/repos/github/AnteWall/react-cast-sender/badge.svg?branch=master)](https://coveralls.io/github/AnteWall/react-cast-sender?branch=master)
+
 Package for easy setup and use of Chromecast (CAF) with React. Will automaticly include and load Cast SDK and initialize player.
 
 ## Todo
