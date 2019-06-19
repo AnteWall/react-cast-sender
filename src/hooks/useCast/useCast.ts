@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import CastContext from '../context/CastContext';
+import CastContext from '../../context/CastContext';
 
 const useCast = () => {
   const context = useContext(CastContext);
