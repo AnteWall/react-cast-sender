@@ -1,11 +1,11 @@
-import { useMemo, useCallback, useState, useEffect, useContext } from 'react';
+import { useMemo, useCallback, useState, useEffect } from 'react';
 import get from 'lodash/get';
-import CastContext from '../context/CastContext';
-import { getDefaultTrackStyling } from '../utils/utils';
-import thumbnailImage from '../utils/thumbnailImage';
+import { getDefaultTrackStyling } from '../../utils/utils';
+import thumbnailImage from '../../utils/thumbnailImage';
+import useCast from '../useCast/useCast';
 
 const useCastPlayer = () => {
-  const { player, playerController } = useContext(CastContext);
+  const { player, playerController } = useCast();
   const [tracks, setTracks] = useState<chrome.cast.media.Track[]>([]);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
@@ -137,61 +137,19 @@ const useCastPlayer = () => {
   useEffect(() => {
     function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
       // We make the check what we update so we dont update on every player changed event since it happens often
-      const newTracks = get(data, 'value.tracks', []);
-      if (tracks.length !== newTracks.length) {
-        setTracks(newTracks);
-      }
-    }
-
-    if (playerController) {
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-        onMediaInfoChanged
-      );
-    }
-    return () => {
-      if (playerController) {
-        playerController.removeEventListener(
-          window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-          onMediaInfoChanged
-        );
-      }
-    };
-  }, [playerController, setTracks, tracks]);
-
-  useEffect(() => {
-    function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
-      // We make the check what we update so we dont update on every player changed event since it happens often
       const newTitle = get(data, 'value.metadata.title', 'No title');
-      if (title !== newTitle) {
-        setTitle(newTitle);
-      }
-    }
-
-    if (playerController) {
-      playerController.addEventListener(
-        window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-        onMediaInfoChanged
-      );
-    }
-    return () => {
-      if (playerController) {
-        playerController.removeEventListener(
-          window.cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-          onMediaInfoChanged
-        );
-      }
-    };
-  }, [playerController, setTitle, title]);
-
-  useEffect(() => {
-    function onMediaInfoChanged(data: cast.framework.RemotePlayerChangedEvent) {
-      // We make the check what we update so we dont update on every player changed event since it happens often
       const newThumbnail = get(
         data,
         'value.metadata.images[0].url',
         thumbnailImage
       );
+      const newTracks = get(data, 'value.tracks', []);
+      if (tracks.length !== newTracks.length) {
+        setTracks(newTracks);
+      }
+      if (title !== newTitle) {
+        setTitle(newTitle);
+      }
       if (thumbnail !== newThumbnail) {
         setThumbnail(newThumbnail);
       }
@@ -211,7 +169,15 @@ const useCastPlayer = () => {
         );
       }
     };
-  }, [playerController, thumbnail, setThumbnail]);
+  }, [
+    playerController,
+    setTitle,
+    title,
+    setTracks,
+    tracks,
+    thumbnail,
+    setThumbnail
+  ]);
 
   const loadMedia = useCallback((request: chrome.cast.media.LoadRequest) => {
     const castSession = window.cast.framework.CastContext.getInstance().getCurrentSession();
