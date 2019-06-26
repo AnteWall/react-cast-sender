@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-describe('useCast', () => {
+describe('useCastPlayer', () => {
   beforeEach(() => {
     global.chrome = {
       cast: {
@@ -250,6 +250,7 @@ describe('useCast', () => {
   it('togglePlay calls correct Api', () => {
     const mockedPlay = jest.fn();
     jest.spyOn(useCast, 'default').mockImplementationOnce(() => ({
+      connected: true,
       // @ts-ignore
       playerController: {
         playOrPause: mockedPlay,
@@ -265,6 +266,7 @@ describe('useCast', () => {
   it('toggleMute calls correct Api', () => {
     const mockedMute = jest.fn();
     jest.spyOn(useCast, 'default').mockImplementationOnce(() => ({
+      connected: true,
       // @ts-ignore
       playerController: {
         muteOrUnmute: mockedMute,
@@ -280,6 +282,7 @@ describe('useCast', () => {
   it('seek calls correct Api', () => {
     const mockedSeekCall = jest.fn();
     jest.spyOn(useCast, 'default').mockImplementationOnce(() => ({
+      connected: true,
       // @ts-ignore
       playerController: {
         seek: mockedSeekCall,
@@ -299,6 +302,7 @@ describe('useCast', () => {
   it('setVolume calls correct Api', () => {
     const mockedVolume = jest.fn();
     jest.spyOn(useCast, 'default').mockImplementationOnce(() => ({
+      connected: true,
       // @ts-ignore
       playerController: {
         setVolumeLevel: mockedVolume,

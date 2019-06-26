@@ -58,9 +58,17 @@ const CastProvider = ({
       data: cast.framework.SessionStateEventData
     ) => {
       if (
+        data.sessionState ===
+          window.cast.framework.SessionState.SESSION_RESUMED ||
+        data.sessionState === window.cast.framework.SessionState.SESSION_STARTED
+      ) {
+        setConnected(true);
+      }
+      if (
         data.sessionState === window.cast.framework.SessionState.SESSION_ENDED
       ) {
         resetCast();
+        setConnected(false);
       }
     };
 

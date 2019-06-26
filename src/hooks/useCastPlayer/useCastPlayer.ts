@@ -5,7 +5,7 @@ import thumbnailImage from '../../utils/thumbnailImage';
 import useCast from '../useCast/useCast';
 
 const useCastPlayer = () => {
-  const { player, playerController } = useCast();
+  const { connected, player, playerController } = useCast();
   const [tracks, setTracks] = useState<chrome.cast.media.Track[]>([]);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
@@ -14,6 +14,23 @@ const useCastPlayer = () => {
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('No title');
   const [thumbnail, setThumbnail] = useState<string>(thumbnailImage);
+
+  function resetValues() {
+    setTracks([]);
+    setCurrentTime(0);
+    setDuration(0);
+    setIsMediaLoaded(false);
+    setIsPaused(false);
+    setIsMuted(false);
+    setThumbnail(thumbnailImage);
+    setTitle('No title');
+  }
+
+  useEffect(() => {
+    if (!connected) {
+      resetValues();
+    }
+  }, [connected]);
 
   /*
    * CurrentTime Event Listener
