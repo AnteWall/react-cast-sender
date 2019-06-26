@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "96e6121cafedf9af91a3d7e1f266ec64",
+    "revision": "fc92096ca09af1693b42ff9a63efb912",
     "url": "/react-cast-sender/index.html"
   },
   {
-    "revision": "5a7d43ad2b42975cad35",
+    "revision": "92d6153283ae653f9992",
     "url": "/react-cast-sender/static/css/main.3d7a58b6.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-cast-sender/static/js/2.0240e014.chunk.js"
   },
   {
-    "revision": "5a7d43ad2b42975cad35",
-    "url": "/react-cast-sender/static/js/main.06bb14a8.chunk.js"
+    "revision": "92d6153283ae653f9992",
+    "url": "/react-cast-sender/static/js/main.0d1bf77f.chunk.js"
   },
   {
     "revision": "3bf53d6bf6f2b308230a",
