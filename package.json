@@ -24,11 +24,6 @@
     "email": "antewall@gmail.com"
   },
   "license": "MIT",
-  "files": [
-    "dist",
-    "src",
-    "README.md"
-  ],
   "scripts": {
     "start": "rollup -c -w",
     "test": "yarn jest",
