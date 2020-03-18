@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
   useMemo,
-  useCallback,
+  useCallback
 } from 'react';
 import get from 'lodash/get';
 import CastContext from './CastContext';
@@ -26,7 +26,7 @@ const CastProvider = ({
     'origin_scoped'
   ),
   language,
-  resumeSavedSession,
+  resumeSavedSession
 }: CastProviderProps) => {
   const [connected, setConnected] = useState<boolean>(false);
   const [deviceName, setDeviceName] = useState<string>('');
@@ -36,7 +36,7 @@ const CastProvider = ({
   );
   const [
     playerController,
-    setPlayerController,
+    setPlayerController
   ] = useState<cast.framework.RemotePlayerController | null>(null);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const CastProvider = ({
         receiverApplicationId,
         resumeSavedSession,
         autoJoinPolicy,
-        language,
+        language
       });
       const player = new window.cast.framework.RemotePlayer();
       setPlayer(player);
@@ -94,14 +94,15 @@ const CastProvider = ({
     language,
     receiverApplicationId,
     resetCast,
-    resumeSavedSession,
+    resumeSavedSession
   ]);
 
   useEffect(() => {
     const onConnectedChange = (
       _data: cast.framework.RemotePlayerChangedEvent
     ) => {
-      if (_data.value) {
+      if(_data.value){
+
         setConnected(true);
         const session = window.cast.framework.CastContext.getInstance().getCurrentSession();
         if (session) {
@@ -133,7 +134,7 @@ const CastProvider = ({
       initialized: castInitialized,
       deviceName,
       player,
-      playerController,
+      playerController
     };
     return value;
   }, [castInitialized, connected, deviceName, player, playerController]);
