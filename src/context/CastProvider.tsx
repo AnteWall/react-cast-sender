@@ -70,7 +70,7 @@ const CastProvider = ({
       }
     };
 
-    if (chrome.cast && window.cast) {
+    if ((window.chrome && window.chrome.cast) && window.cast) {
       window.cast.framework.CastContext.getInstance().setOptions({
         receiverApplicationId,
         resumeSavedSession,
