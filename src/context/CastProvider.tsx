@@ -48,8 +48,6 @@ const CastProvider = ({
   const resetCast = useCallback(() => {
     setConnected(false);
     setDeviceName('');
-    setPlayer(null);
-    setPlayerController(null);
   }, []);
 
   /* onCast Initalized */
@@ -103,10 +101,15 @@ const CastProvider = ({
     const onConnectedChange = (
       _data: cast.framework.RemotePlayerChangedEvent
     ) => {
-      setConnected(true);
-      const session = window.cast.framework.CastContext.getInstance().getCurrentSession();
-      if (session) {
-        setDeviceName(session.getSessionObj().receiver.friendlyName);
+      if(_data.value){
+
+        setConnected(true);
+        const session = window.cast.framework.CastContext.getInstance().getCurrentSession();
+        if (session) {
+          setDeviceName(session.getSessionObj().receiver.friendlyName);
+        }
+      } else {
+        setConnected(false);
       }
     };
     if (playerController) {
